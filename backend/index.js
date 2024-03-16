@@ -2,13 +2,16 @@ const express = require("express");
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
 const socket = require('socket.io')
+const path = require('path')
 require("dotenv").config();
 require("./db/Connect")
 
 
 const app = express();
+
 app.use(cookieParser())
 app.use(cors())
+app.use(express.static(path.resolve(__dirname,'build')))
 app.use(express.json());
 app.use('/api/v1/user',require('./routes/userRoutes'))
 app.use('/api/v1/message',require('./routes/messageRoutes'))
@@ -21,7 +24,7 @@ const server = app.listen(PORT,()=>{
 
 const io = socket(server,{
     cors:{
-        origin:"http://localhost:3000",
+        origin:"/",
         credentials:true
     }
 
